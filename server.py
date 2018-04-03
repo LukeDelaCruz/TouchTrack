@@ -1,7 +1,14 @@
+# Member 1: Onimisi Ayira with ID: 1548437
+# Member 2: Luke Patrick Dela Cruz with ID: 1504816
+# Cmput 275 Wi18, Project
+
 from flask import Flask, render_template
 from flask_sockets import Sockets
 import pyautogui
+import socket
+import os
 
+# initialize network objects
 app = Flask(__name__)
 sockets = Sockets(app)
 
@@ -16,11 +23,19 @@ def echo_socket(ws):
                 coords = message.split(",")
                 pyautogui.click(int(coords[0].strip()), int(coords[1].strip()))
 
-@app.route('/')
-def hello():
-    return 'Hello World!'
+# @app.route('/')
+# def hello():
+#     return 'Hello World!'
 
 if __name__ == "__main__":
+
+    # set up command line
+    clear = lambda: os.system('cls')
+    clear()
+    serverIP = socket.gethostbyname(socket.gethostname())
+    print("Use this as the server IP in the app:", serverIP)
+
+    # run server
     from gevent import pywsgi
     from geventwebsocket.handler import WebSocketHandler
     server = pywsgi.WSGIServer(('0.0.0.0', 5000), app, handler_class=WebSocketHandler)
