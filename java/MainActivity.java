@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        getSupportActionBar().setTitle("Network Configuration Mode");
         IPinput = (EditText) findViewById(R.id.IPinput);
         submitIP = (Button) findViewById(R.id.submitIP);
         submitIP.setOnClickListener(new View.OnClickListener() {
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 serverIP = IPinput.getText().toString();
                 matcher = IP_ADDRESS.matcher(serverIP);
                 if (matcher.matches()) {
-                    showToast(serverIP + " Accepted. Entering controlling mode.");
+                    showToast(serverIP + " Accepted!");
                     launchActivity();
                 }
                 else {

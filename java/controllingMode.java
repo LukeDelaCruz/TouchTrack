@@ -21,7 +21,6 @@ public class controllingMode extends AppCompatActivity {
         Bundle extrasBundle = intentExtras.getExtras();
 
         Request request = new Request.Builder().url("ws://" + extrasBundle.getString("serverIP") + ":5000/move_mouse").build();
-        showToast(extrasBundle.getString("serverIP"));
         TouchCoordsDispatcher TCD = new TouchCoordsDispatcher(touchPadView);
         OkHttpClient client = new OkHttpClient();
         WebSocket ws = client.newWebSocket(request, TCD);
