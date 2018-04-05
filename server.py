@@ -16,7 +16,8 @@ sockets = Sockets(app)
 
 # set up environment
 received_coords = [[[-1, -1], False], False]
-sensitivity_factor = 4  # recommended to be in the range [2,5] for comfort
+
+sensitivity_factor = 5  # recommended to be in the range [3,5] for comfort
 inverted = 1  # positive 1 for normal feel, and negative one for inverted
 pyautogui.PAUSE = 0.01  # remove lag delay!
 pyautogui.FAILSAFE = False  # allow for the corners to be reached by the cursor
@@ -29,33 +30,36 @@ def echo_socket(ws):
         global received_coords
     while not ws.closed:
         message = ws.receive()
-        if message:
-            if message == "Clicked!":
-                pyautogui.click()
+        if message == "Clicked!":
+            pyautogui.click()
+        else:
+            # print(received_coords)
+            coords = message.split(",")
+            new_x = float(coords[0].strip())
+            new_y = float(coords[1].strip())
+            if not received_coords[0][1] and not received_coords[1]:
+                received_coords[0][0][0] = new_x
+                received_coords[0][0][1] = new_y
+                received_coords[0][1] = True
+            elif received_coords[0][1] and not received_coords[1]:
+                curr_x, curr_y = pyautogui.position()
+                # we can invert transitions x and y
+                trans_x = (new_x - received_coords[0][0][0])
+                trans_y = (new_y - received_coords[0][0][1])
+                if abs(trans_x) > 30 or abs(trans_y) > 30:
+                    # trans_x = 0
+                    # trans_y = 0
+                    received_coords = [[[-1, -1], False], False]
+                    continue
+                trans_x *= sensitivity_factor
+                trans_y *= sensitivity_factor
+                pyautogui.moveTo(curr_x + trans_x , curr_y + trans_y)
+                received_coords = [[[-1, -1], False], False]
             else:
-                # print(received_coords)
-                coords = message.split(",")
-                new_x = int(coords[0].strip())
-                new_y = int(coords[1].strip())
-                if not received_coords[0][1] and not received_coords[1]:
-                    received_coords[0][0][0] = new_x
-                    received_coords[0][0][1] = new_y
-                    received_coords[0][1] = True
-                elif received_coords[0][1] and not received_coords[1]:
-                    curr_x, curr_y = pyautogui.position()
-                    # we can invert transitions x and y
-                    trans_x = (new_x - received_coords[0][0][0])
-                    trans_y = (new_y - received_coords[0][0][1])
-                    if abs(trans_x) > 20 or abs(trans_y) > 20:
-                        trans_x = 0
-                        trans_y = 0
-                    trans_x *= sensitivity_factor
-                    trans_y *= sensitivity_factor
-                    pyautogui.moveTo(curr_x + trans_x , curr_y + trans_y)
-                    received_coords = [[[-1, -1], False], False]
-                else:
-                    print("hi")
-                    received_coords = [[[-1, -1], False], False]
+                print("hi")
+                received_coords = [[[-1, -1], False], False]
+
+    print("Android device disconnected!")  # how to disconnect phone from server???
 
 # @app.route('/')
 # def hello():
