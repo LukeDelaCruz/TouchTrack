@@ -8,6 +8,7 @@ from flask_sockets import Sockets
 import pyautogui
 import socket
 import os
+import time
 
 # initialize network objects
 app = Flask(__name__)
@@ -15,6 +16,7 @@ sockets = Sockets(app)
 
 # set up environment
 received_coords = [[[-1, -1], False], [[-1, -1], False]]
+sensitivity_factor = 3  # recommended to be in the range [2,5] for comfort
 pyautogui.PAUSE = 0.01  # remove lag!
 
 
@@ -29,7 +31,7 @@ def echo_socket(ws):
             if message == "Clicked!":
                 pyautogui.click()
             else:
-                print(received_coords)
+                # print(received_coords)
                 coords = message.split(",")
                 new_x = int(coords[0].strip())
                 new_y = int(coords[1].strip())
@@ -41,14 +43,15 @@ def echo_socket(ws):
                     received_coords[1][0][0] = new_x
                     received_coords[1][0][1] = new_y
                     received_coords[1][1] = True
-                elif received_coords[0][1] and received_coords[1][1]:
+                #elif received_coords[0][1] and received_coords[1][1]:
                     curr_x, curr_y = pyautogui.position()
                     trans_x = received_coords[1][0][0] - received_coords[0][0][0]
                     trans_y = received_coords[1][0][1] - received_coords[0][0][1]
-                    pyautogui.moveTo(curr_x+trans_x, curr_y+trans_y)
+                    pyautogui.moveTo(curr_x + 3*trans_x , curr_y + 3*trans_y)
                     received_coords = [[[-1, -1], False], [[-1, -1], False]]
-                else:
-                    break
+                else:  # the finger has been held down for a while so we wait for a new gesture
+                    print("hi")
+                    received_coords = [[[-1, -1], False], [[-1, -1], False]]
 
 # @app.route('/')
 # def hello():
