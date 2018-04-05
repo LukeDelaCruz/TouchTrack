@@ -2,6 +2,7 @@
 # Member 2: Luke Patrick Dela Cruz with ID: 1504816
 # Cmput 275 Wi18, Project
 
+
 from flask import Flask, render_template
 from flask_sockets import Sockets
 import pyautogui
@@ -11,11 +12,11 @@ import os
 # initialize network objects
 app = Flask(__name__)
 sockets = Sockets(app)
+received_coords = [[[-1, -1], False], [[-1, -1], False]]
 
 
 @sockets.route('/move_mouse')
 def echo_socket(ws):
-    received_coords = [[[-1, -1], False], [[-1, -1], False]]
     if not ws.closed:
         print("Android device acknowledged!")
     while not ws.closed:
@@ -24,6 +25,8 @@ def echo_socket(ws):
             if message == "Clicked!":
                 pyautogui.click()
             else:
+                global received_coords
+                print(received_coords)
                 coords = message.split(",")
                 pyautogui.PAUSE = 0.01  # remove lag!
                 new_x = int(coords[0].strip())
@@ -62,19 +65,20 @@ def echo_socket(ws):
 
 if __name__ == "__main__":
 
-    # # set up command line
-    # clear = lambda: os.system('cls')
-    # window_resize = lambda: os.system('mode con: cols=174 lines=43')
-    # clear()
-    # window_resize()
-    # serverIP = socket.gethostbyname(socket.gethostname())
-    # print("Use this as the server IP in the app:", serverIP)
-    #
-    # # run server
-    # from gevent import pywsgi
-    # from geventwebsocket.handler import WebSocketHandler
-    # server = pywsgi.WSGIServer(('0.0.0.0', 5000), app, handler_class=WebSocketHandler)
-    # server.serve_forever()
-    received_coords = [[[-1, -2], False], [[-1, -1], False]]
-    received_coords[0][0][0] = -3
-    print(received_coords[0][0][0])
+    # set up command line
+    clear = lambda: os.system('cls')
+    window_resize = lambda: os.system('mode con: cols=174 lines=43')
+    clear()
+    window_resize()
+    serverIP = socket.gethostbyname(socket.gethostname())
+    print("Use this as the server IP in the app:", serverIP)
+
+    # run server
+    from gevent import pywsgi
+    from geventwebsocket.handler import WebSocketHandler
+    server = pywsgi.WSGIServer(('0.0.0.0', 5000), app, handler_class=WebSocketHandler)
+    server.serve_forever()
+
+    # received_coords = [[[-1, -2], False], [[-1, -1], False]]
+    # received_coords[0][0][0] = -3
+    # print(received_coords[0][0][0])
