@@ -16,9 +16,14 @@ sockets = Sockets(app)
 
 # set up environment
 received_coords = [[[-1, -1], False], False]
-sensitivity_factor = 3  # recommended to be in the range [2,5] for comfort
+sensitivity_factor = 4  # recommended to be in the range [2,5] for comfort
 inverted = 1  # positive 1 for normal feel, and negative one for inverted
-pyautogui.PAUSE = 0.01  # remove lag!
+pyautogui.PAUSE = 0.01  # remove lag delay!
+pyautogui.FAILSAFE = False  # allow for the corners to be reached by the cursor
+
+
+def remap(old_value, old_min =  0, old_max = 1920, new_min = -10, new_max = 10):
+    return (((old_value - old_min) * (new_max - new_min)) / (old_max - old_min)) + new_min
 
 
 @sockets.route('/move_mouse')
@@ -36,19 +41,23 @@ def echo_socket(ws):
                 coords = message.split(",")
                 new_x = int(coords[0].strip())
                 new_y = int(coords[1].strip())
-                if not received_coords[0][1]:
+                if not received_coords[0][1] and not received_coords[1]:
                     received_coords[0][0][0] = new_x
                     received_coords[0][0][1] = new_y
                     received_coords[0][1] = True
                 elif received_coords[0][1] and not received_coords[1]:
                     curr_x, curr_y = pyautogui.position()
-                    trans_x = inverted*(new_x - received_coords[0][0][0])
-                    trans_y = inverted*(new_y - received_coords[0][0][1])
+                    # we can invert transitions x and y
+                    trans_x = (new_x - received_coords[0][0][0])
+                    trans_y = (new_y - received_coords[0][0][1])
+                    if abs(trans_x) > 20 or abs(trans_y) > 20:
+                        trans_x = 0
+                        trans_y = 0
                     trans_x *= sensitivity_factor
                     trans_y *= sensitivity_factor
                     pyautogui.moveTo(curr_x + trans_x , curr_y + trans_y)
                     received_coords = [[[-1, -1], False], False]
-                else: 
+                else:
                     print("hi")
                     received_coords = [[[-1, -1], False], False]
 
