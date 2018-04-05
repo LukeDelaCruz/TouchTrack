@@ -16,12 +16,14 @@ public class TouchCoordsDispatcher extends WebSocketListener {
         this.view = view;
     }
 
-    boolean moved = false;
-    long startTime = 0;
     @Override
     public void onOpen(final WebSocket webSocket, Response response) {
 
         view.setOnTouchListener(new View.OnTouchListener() {
+            private static final int MAX_CLICK_DURATION = 150;
+            private long startClickTime;
+            private long doubleClickTime;
+
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -29,23 +31,23 @@ public class TouchCoordsDispatcher extends WebSocketListener {
                 if (view == null) {
                     return false;
                 }
+                
                 switch (motionEvent.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startClickTime = System.currentTimeMillis();
+
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        long clickDuration = System.currentTimeMillis() - startClickTime;
+                        if (clickDuration < MAX_CLICK_DURATION){
+                            webSocket.send("C");
+                        }
+
                     case MotionEvent.ACTION_MOVE:
                         String coordMessage = String.format("%d, %d", (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                         webSocket.send(coordMessage);
-                        moved = true;
-                        startTime = System.currentTimeMillis();
 
-//                    case MotionEvent.ACTION_DOWN:
-//                        return true;
-
-//                    case MotionEvent.ACTION_UP:
-//                        if (System.currentTimeMillis() - startTime > 700){
-//                            moved = false;
-//                        }
-//                        else {
-//                            webSocket.send("Clicked!");
-//                        }
 //                    case MotionEvent.ACTION_CANCEL:
 
                 }
