@@ -22,10 +22,6 @@ pyautogui.PAUSE = 0.01  # remove lag delay!
 pyautogui.FAILSAFE = False  # allow for the corners to be reached by the cursor
 
 
-def remap(old_value, old_min =  0, old_max = 1920, new_min = -10, new_max = 10):
-    return (((old_value - old_min) * (new_max - new_min)) / (old_max - old_min)) + new_min
-
-
 @sockets.route('/move_mouse')
 def echo_socket(ws):
     if not ws.closed:
