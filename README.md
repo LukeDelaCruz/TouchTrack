@@ -10,6 +10,6 @@ Server instructions:
 5. Type in the IP address given by the server to the app.
 
 Todo:
-1. Have a container that allows app to dial into the server's IP
-2. Have smooth scrolling.
 3. Have authentication and proper termination when connections are lost.
+4. Have enum states using graph nodes that implement a finite state machine to check for valid IPs
+5. Proper left click and right click.
