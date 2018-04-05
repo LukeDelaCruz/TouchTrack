@@ -15,8 +15,9 @@ app = Flask(__name__)
 sockets = Sockets(app)
 
 # set up environment
-received_coords = [[[-1, -1], False], [[-1, -1], False]]
+received_coords = [[[-1, -1], False], False]
 sensitivity_factor = 3  # recommended to be in the range [2,5] for comfort
+inverted = 1  # positive 1 for normal feel, and negative one for inverted
 pyautogui.PAUSE = 0.01  # remove lag!
 
 
@@ -39,19 +40,17 @@ def echo_socket(ws):
                     received_coords[0][0][0] = new_x
                     received_coords[0][0][1] = new_y
                     received_coords[0][1] = True
-                elif received_coords[0][1] and not received_coords[1][1]:
-                    received_coords[1][0][0] = new_x
-                    received_coords[1][0][1] = new_y
-                    received_coords[1][1] = True
-                #elif received_coords[0][1] and received_coords[1][1]:
+                elif received_coords[0][1] and not received_coords[1]:
                     curr_x, curr_y = pyautogui.position()
-                    trans_x = received_coords[1][0][0] - received_coords[0][0][0]
-                    trans_y = received_coords[1][0][1] - received_coords[0][0][1]
-                    pyautogui.moveTo(curr_x + 3*trans_x , curr_y + 3*trans_y)
-                    received_coords = [[[-1, -1], False], [[-1, -1], False]]
-                else:  # the finger has been held down for a while so we wait for a new gesture
+                    trans_x = inverted*(new_x - received_coords[0][0][0])
+                    trans_y = inverted*(new_y - received_coords[0][0][1])
+                    trans_x *= sensitivity_factor
+                    trans_y *= sensitivity_factor
+                    pyautogui.moveTo(curr_x + trans_x , curr_y + trans_y)
+                    received_coords = [[[-1, -1], False], False]
+                else: 
                     print("hi")
-                    received_coords = [[[-1, -1], False], [[-1, -1], False]]
+                    received_coords = [[[-1, -1], False], False]
 
 # @app.route('/')
 # def hello():
