@@ -29,6 +29,8 @@ public class TouchCoordsDispatcher extends WebSocketListener {
         view.setOnTouchListener(new View.OnTouchListener() {
             private static final int MAX_CLICK_DURATION = 150;
             private long startClickTime;
+            private int tap_count = 0;
+            private boolean tap2 = false;
 
 
             @Override
@@ -40,22 +42,40 @@ public class TouchCoordsDispatcher extends WebSocketListener {
 
                 switch (motionEvent.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
+                        ++tap_count;
                         startClickTime = System.currentTimeMillis();
                         break;
 
+                    case MotionEvent.ACTION_POINTER_DOWN : {
+                        ++tap_count;
+                        webSocket.send("2C");
+                        tap2 = true;
+                        break;
+                    }
+
+//                    case MotionEvent.ACTION_POINTER_UP : {
+//                        --tap_count;
+//                        break;
+//                    }
+
                     case MotionEvent.ACTION_UP:
+                        --tap_count;
                         long clickDuration = System.currentTimeMillis() - startClickTime;
-                        if (clickDuration < MAX_CLICK_DURATION){
+                        if (clickDuration < MAX_CLICK_DURATION && !tap2){
                             webSocket.send("C");
                         }
+                        tap2 = false;
+//                        if (tap_count == 2) {
+//                            tap_count = 0;
+//                            webSocket.send("2C");
+//                        }
                         break;
 
                     case MotionEvent.ACTION_MOVE:
                         String coordMessage = String.format("%d, %d", (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                         webSocket.send(coordMessage);
                         break;
-                    case MotionEvent.ACTION_CANCEL:
-                        webSocket.send("hi2");
+
                 }
 
 
