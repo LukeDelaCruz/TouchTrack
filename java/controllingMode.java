@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import okhttp3.OkHttpClient;
@@ -26,7 +27,14 @@ public class controllingMode extends AppCompatActivity {
         WebSocket ws = client.newWebSocket(request, TCD);
         client.dispatcher().executorService().shutdown();
     }
+
+    public void finishActivity(View v){
+        finish();
+    }
+
     private void showToast(String text) {
         Toast.makeText(controllingMode.this, text, Toast.LENGTH_SHORT).show();
     }
 }
+
+
