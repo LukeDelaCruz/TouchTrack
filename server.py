@@ -28,11 +28,11 @@ def echo_socket(ws):
         global received_coords
     while not ws.closed:
         message = ws.receive()
-        if message == "C": 
+        if message == "C":
             pyautogui.click()
             received_coords[0][1] = False
-        elif message == "hi2":
-            print(message)
+        elif not message:
+            break
         else:
             # print(received_coords)
             coords = message.split(",")
@@ -57,14 +57,12 @@ def echo_socket(ws):
                 # print("hi")
                 received_coords[0][1] = False
 
-    # how to disconnect phone from server???
     # or how to disconnect server from phone
     # such that they know the other was disconnected ???
     print("Android device disconnected!")
 
 # @app.route('/')
 # def hello():
-#     print("Android device disconnected!")
 #     return 'Hello World!'
 
 if __name__ == "__main__":
