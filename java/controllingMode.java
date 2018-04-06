@@ -30,6 +30,7 @@ public class controllingMode extends AppCompatActivity {
 
     public void finishActivity(View v){
         finish();
+        System.exit(0);
     }
 
     private void showToast(String text) {
