@@ -28,11 +28,15 @@ def echo_socket(ws):
         global received_coords
     while not ws.closed:
         message = ws.receive()
-        if message == "C":
-            pyautogui.click()
-            received_coords[0][1] = False
-        elif not message:
+        if not message:
             break
+        elif message == "C":
+            pyautogui.click(button='left')
+            received_coords[0][1] = False
+        elif message == "2C":
+            # print('right!')
+            pyautogui.click(button='right')
+            received_coords[0][1] = False
         else:
             # print(received_coords)
             coords = message.split(",")
@@ -54,12 +58,13 @@ def echo_socket(ws):
                 pyautogui.moveTo(curr_x + trans_x , curr_y + trans_y)
                 received_coords[0][1] = False
             else:
-                # print("hi")
+                print("hi")
                 received_coords[0][1] = False
 
     # or how to disconnect server from phone
     # such that they know the other was disconnected ???
     print("Android device disconnected!")
+    return
 
 # @app.route('/')
 # def hello():
@@ -74,6 +79,7 @@ if __name__ == "__main__":
     window_resize()
     serverIP = socket.gethostbyname(socket.gethostname())
     print("Use this as the server IP in the app:", serverIP)
+    print("Use Ctrl + c to exit.")
 
     # run server from the random port of 5000
     from gevent import pywsgi
