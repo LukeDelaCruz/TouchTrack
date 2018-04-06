@@ -9,4 +9,11 @@
     android:id="@+id/Control"
     tools:context="com.example.lukepatrick.touchtrack2.controllingMode">
 
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="finishActivity"
+        android:text="Back" />
+
 </android.support.constraint.ConstraintLayout>
