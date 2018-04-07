@@ -5,6 +5,8 @@
 
 from flask import Flask, render_template
 from flask_sockets import Sockets
+from codegen import gen_password
+# from pynput import Button, Controller
 import pyautogui
 import socket
 import os
@@ -15,6 +17,8 @@ sockets = Sockets(app)
 
 # set up environment
 received_coords = [[[-1, -1], False], False]
+security_code = ""
+# mouse = Controller()
 sensitivity_factor = 4.5  # recommended to be in the range [3,5] for comfort
 leap_bound = 20  # assertion that the cursor can't be moved more than 25 pixels
 pyautogui.PAUSE = 0.01  # remove delay! can't be zero from hardware limitations
@@ -24,18 +28,23 @@ pyautogui.FAILSAFE = False  # allow for the corners to be reached by the cursor
 @sockets.route('/move_mouse')
 def echo_socket(ws):
     if not ws.closed:
-        print("Android device acknowledged!")
-        global received_coords
+        print("Android device acknowledged! Server IP accepted!")
+        if ws.receive() != security_code:  # now we are ready to receive the security code
+            print("Invalid security code! Please try again by hitting the >terminate< button.")
+        else:
+            print("Security code accepted!")
+        global received_coords  # globalize the coordinate tracker
     while not ws.closed:
         message = ws.receive()
         if not message:
             break
         elif message == "C":
             pyautogui.click(button='left')
+            # mouse.press(Button.left)
             received_coords[0][1] = False
-        elif message == "2C":
-            # print('right!')
+        elif message == "RC":
             pyautogui.click(button='right')
+            print('right!')
             received_coords[0][1] = False
         else:
             # print(received_coords)
@@ -58,12 +67,12 @@ def echo_socket(ws):
                 pyautogui.moveTo(curr_x + trans_x , curr_y + trans_y)
                 received_coords[0][1] = False
             else:
-                print("hi")
+                print(message)
                 received_coords[0][1] = False
 
     # or how to disconnect server from phone
     # such that they know the other was disconnected ???
-    print("Android device disconnected!")
+    print("Android device terminated!")
     return
 
 # @app.route('/')
@@ -72,11 +81,9 @@ def echo_socket(ws):
 
 if __name__ == "__main__":
 
-    # set up command line
-    clear = lambda: os.system('cls')
-    window_resize = lambda: os.system('mode con: cols=174 lines=43')
-    clear()
-    window_resize()
+    # set up command line and authentication
+    security_code = gen_password(1)
+    print("Enter this 5-character-case-sensitive security code:", security_code)
     serverIP = socket.gethostbyname(socket.gethostname())
     print("Use this as the server IP in the app:", serverIP)
     print("Use Ctrl + c to exit.")
