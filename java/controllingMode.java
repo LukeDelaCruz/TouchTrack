@@ -21,12 +21,15 @@ public class controllingMode extends AppCompatActivity {
         Bundle extrasBundle = intentExtras.getExtras();  // get the extras from previous activity
 
         // using the IP from user that was from server, we can request a connection establishment
-        Request request = new Request.Builder().url("ws://" + extrasBundle.getString("serverIP") + ":5000/move_mouse").build();
-
+        String url = "ws://" + extrasBundle.getString("serverIP") + ":5000/move_mouse";
+        // unpack the security code from last activity as in IP
+        String security_code =  extrasBundle.getString("serverPasswd");
+        Request request = new Request.Builder().url(url).build();
         // instantiating network objects
         TouchCoordsDispatcher TCD = new TouchCoordsDispatcher(touchPadView);
         OkHttpClient client = new OkHttpClient();
         WebSocket ws = client.newWebSocket(request, TCD);
+        ws.send(security_code);  // establish semi-secure connection with the server
         client.dispatcher().executorService().shutdown();
     }
 
