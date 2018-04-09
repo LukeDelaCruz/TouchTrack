@@ -1,3 +1,7 @@
+# This is the python implementation of checking for valid IP addresses.
+# The server didn't use this. It is simply here for development purposes
+# and clarity. A pattern compiler was used in the Android app.
+
 from enum import Enum
 
 class IPState(Enum):
