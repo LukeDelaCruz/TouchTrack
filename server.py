@@ -6,6 +6,7 @@ import pyautogui
 import socket
 import os
 
+
 # initialize network objects
 app = Flask(__name__)
 sockets = Sockets(app)
@@ -29,7 +30,7 @@ def echo_socket(ws):
 
         if ws.receive() != security_code:  # now we are ready to receive the security code
             print("Invalid security code! Please try again by hitting the >terminate< button.")
-            security_code = gen_password(1)
+            security_code = gen_password(5)
             print("New security code generated:", security_code)
             return  # prevents potential server timeouts in between echo_socket calls
         else:
@@ -39,10 +40,11 @@ def echo_socket(ws):
         message = ws.receive()
         if not message:
             break
+        # good to go to process!
         received_coords = oneTouchTracker(message, received_coords)
 
     print("Android device terminated!")
-    security_code = gen_password(1)
+    security_code = gen_password(5)
     print("New security code generated:", security_code)
     return  # prevents potential server timeouts in between echo_socket calls
 
@@ -50,7 +52,7 @@ def echo_socket(ws):
 if __name__ == "__main__":
 
     # set up command line and authentication
-    security_code = gen_password(1)
+    security_code = gen_password(5)
     print("Enter this 5-character-case-sensitive security code:", security_code)
     serverIP = socket.gethostbyname(socket.gethostname())  # retrieve machine's (server) IP
     print("Use this as the server IP in the app:", serverIP)
