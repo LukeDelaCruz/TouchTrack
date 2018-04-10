@@ -13,9 +13,21 @@ def oneTouchTracker(message, received_coords):
     """
     if message == "C":
         pyautogui.click()
-        received_coords[0][1] = False
+        received_coords[0][1] = False  # flag reset to prepare for next call
     elif message == "RC":
         pyautogui.click(button='right')
+        received_coords[0][1] = False
+    elif message == "SU":
+        pyautogui.scroll(30)
+        received_coords[0][1] = False
+    elif message == "SD":
+        pyautogui.scroll(-30)
+        received_coords[0][1] = False
+    elif message == "SL":  # left scrolling is supported only in Linux and Mac OSX
+        pyautogui.hscroll(-30)
+        received_coords[0][1] = False
+    elif message == "SR": # right scrolling is supported only in Linux and Mac OSX
+        pyautogui.hscroll(30)
         received_coords[0][1] = False
     else:
         coords = message.split(",")
