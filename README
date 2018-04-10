@@ -4,7 +4,7 @@
 
 Accessories:
 * Wireless(Wi-Fi) local area network connection
-* Android phone (Wi-Fi-enabled)
+* Android phone (Wi-Fi-enabled) (NOTE: If your phone has the functionality to be a WiFi hotspot you can use that for convenience!)
 * Wi-Fi enabled computer
 
 Included files in the submission.zip:
@@ -32,7 +32,7 @@ Usage Instructions:
 Note: UWS won't work since it will place devices in different subnets.
 Note: You don't have to use GuestUofA, it's your choice.
 2. Run the server using:
-  python3 server.py
+  python server.py
   or
   python3 server.py
 3. Open the app and input the server IP and security code information
