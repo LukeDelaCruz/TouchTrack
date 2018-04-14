@@ -13,7 +13,12 @@ Included files in the submission.zip:
 * codegen.py
 * IPfsm.py (optional, just for your information)
 * TouchTrack.apk (signed APK)
-
+* AppSrcFiles(directory):
+  >java (subdirectory):
+    *MainActivity.java  (master class for MainActivity - Network Configuration Mode)
+    *controllingMode.java (master class for the secondary activity - Tracking Mode)
+    *TouchCoordsDispatcher.java  (extension class that communicates with the server)
+    
 Pre-requisites:
 * Python3
 * Install flask_sockets (https://github.com/kennethreitz/flask-sockets)
