@@ -11,6 +11,7 @@ Accessories:
 Included files in the submission.zip:
 * server.py
 * codegen.py
+* IPfsm.py (optional, just for your information)
 * TouchTrack.apk (signed APK)
 
 Pre-requisites:
