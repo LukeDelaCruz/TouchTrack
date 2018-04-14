@@ -20,12 +20,18 @@ Pre-requisites:
 * Install flask (http://flask.pocoo.org/)
 * Install pyautogui (http://pyautogui.readthedocs.io/en/latest/install.html)
 > On Windows, there are no other modules to install.
+
+***** 
+Please take NOTICE: This project was developed and tested strictly in a Windows 10 environment with a Samsung Galaxy Grand Prime
+so if there are issues with functionality please give our team an email
 > On OS X, run sudo pip3 install pyobjc-framework-Quartz,
   sudo pip3 install pyobjc-core,
   and then sudo pip3 install pyobjc.
 > On Linux, run sudo pip3 install python3-xlib, sudo apt-get install scrot,
   sudo apt-get install python3-tk, and sudo apt-get install python3-dev.
   (Scrot is a screenshot program that PyAutoGUI uses.)
+*****
+
 * Move the APK to a local folder in the Android device, then tap on the file to
 install (permissions have to be granted)
 
