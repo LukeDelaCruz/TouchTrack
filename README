@@ -19,7 +19,6 @@ Pre-requisites:
 * Install flask_sockets (https://github.com/kennethreitz/flask-sockets)
 * Install flask (http://flask.pocoo.org/)
 * Install pyautogui (http://pyautogui.readthedocs.io/en/latest/install.html)
-> On Windows, there are no other modules to install.
 
 ***** 
 Please take NOTICE: This project was developed and tested strictly in a Windows 10 environment with a Samsung Galaxy Grand Prime
