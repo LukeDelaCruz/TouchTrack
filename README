@@ -51,8 +51,7 @@ Assumptions:
 Issues with the program:
 * The server is difficult to run within a virtual machine environment since
 bridging is necessary.
-* Noticeable lag depending on the connection state
-*
+* Noticeable lag depending on the connection state and device make
 
 Wiring instructions:
 * None needed
