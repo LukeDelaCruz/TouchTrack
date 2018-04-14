@@ -18,6 +18,10 @@ Included files in the submission.zip:
     *MainActivity.java  (master class for MainActivity - Network Configuration Mode)
     *controllingMode.java (master class for the secondary activity - Tracking Mode)
     *TouchCoordsDispatcher.java  (extension class that communicates with the server)
+  >layout (subdirectory):
+    *activity_controlling_mode.xml  (markup for the MainActivity - Network Configuration Mode)
+    *activity_main.xml  (markup for the secondary activity - Tracking Mode)
+  *AndroidManifest.xml  (essential source file for the app to run in the Android/Google ecosystem)
     
 Pre-requisites:
 * Python3
