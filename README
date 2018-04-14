@@ -31,6 +31,7 @@ so if there are issues with functionality please give our team an email
   sudo apt-get install python3-tk, and sudo apt-get install python3-dev.
   (Scrot is a screenshot program that PyAutoGUI uses.)
 *****
+
 * Finally install the app by moving the APK to a local folder in your Android device, then click the file to
 install (permissions have to be granted)
 
